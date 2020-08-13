@@ -1,5 +1,7 @@
 # wigwamapp
 
+Front-end application for WigwamOS
+
 ## Project setup
 ```
 npm install
