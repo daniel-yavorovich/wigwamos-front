@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row class="mb-6" no-gutters>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="4" lg="4" xl="4">
           <v-card
               class="mx-3"
               outlined
@@ -26,7 +26,7 @@
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               outlined
@@ -46,12 +46,12 @@
               <v-list-item-avatar
                   tile
                   size="110">
-                <v-img :src="getPeriodImage(period.id)"></v-img>
+                <v-img :src="microclimateImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               outlined
@@ -74,7 +74,7 @@
         </v-col>
       </v-row>
       <v-row class="mb-6" no-gutters>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
@@ -84,7 +84,7 @@
                           :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
@@ -94,7 +94,7 @@
                           :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
@@ -106,7 +106,7 @@
         </v-col>
       </v-row>
       <v-row class="mb-6" no-gutters>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
@@ -116,7 +116,7 @@
                           :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
@@ -126,7 +126,7 @@
                           :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col md="4">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
@@ -161,6 +161,7 @@ export default {
         'day': 17
       },
       wateringImage: require(`../assets/watering.png`),
+      microclimateImage: require(`../assets/microclimate.png`),
       wateringStatus: '',
       chartOptions: {
         height: 230,
@@ -196,9 +197,6 @@ export default {
   },
   methods: {
     getConfigImage(id) {
-      return require(`../assets/${id}.png`)
-    },
-    getPeriodImage(id) {
       return require(`../assets/${id}.png`)
     },
     async loadGrowingInfo() {
