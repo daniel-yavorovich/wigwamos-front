@@ -21,7 +21,7 @@
               <v-list-item-avatar
                   tile
                   size="110">
-                <v-img :src="getConfigImage(config.id)"></v-img>
+                <v-img :src="getConfigImage(growingInfo.config)"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
@@ -151,17 +151,6 @@ export default {
   data() {
     return {
       timer: '',
-      config: {
-        'id': 'autoflowering',
-        'name': 'Autoflowering',
-        'description': 'Autoflowering cannabis varieties automatically switch from vegetative growth to the flowering stage based on age',
-      },
-      period: {
-        'id': 'vegetative',
-        'name': 'Vegetative',
-        'description': 'The vegetative stage of cannabis is where the plant’s growth truly takes off',
-        'day': 17
-      },
       wateringImage: require(`../assets/watering.png`),
       microclimateImage: require(`../assets/microclimate.png`),
       wateringStatus: '',
