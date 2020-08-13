@@ -61,7 +61,8 @@
               <v-list-item-content>
                 <div class="overline mb-4">Watering</div>
                 <v-list-item-title class="headline mb-1">{{ wateringStatus }}</v-list-item-title>
-                <v-list-item-subtitle class="headline mb-1">Water level: {{ waterLevelMetricData.avgValue }}%</v-list-item-subtitle>
+                <v-list-item-subtitle class="headline mb-1">Water level: {{ waterLevelMetricData.avgValue }}%
+                </v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-avatar
@@ -149,6 +150,7 @@ export default {
   },
   data() {
     return {
+      timer: '',
       config: {
         'id': 'autoflowering',
         'name': 'Autoflowering',
@@ -235,14 +237,17 @@ export default {
 
       if (this.waterLevelMetricData.avgValue <= 10) {
         this.wateringStatus = 'Need watering'
-      }
-      else {
+      } else {
         this.wateringStatus = 'Soil is wet'
       }
     }
   },
-  async mounted() {
-    await this.fillData()
+  created() {
+    this.fillData();
+    this.timer = setInterval(this.fillData, 10 * 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   }
 }
 </script>
