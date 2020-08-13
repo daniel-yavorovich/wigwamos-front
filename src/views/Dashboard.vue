@@ -1,18 +1,21 @@
 <template>
   <div>
     <v-container>
-      <v-row class="mb-12">
-        <v-col class="md4">
+      <v-row class="mb-6" no-gutters>
+        <v-col md="4">
           <v-card
               class="mx-3"
-              max-width="500"
-              min-height="220"
               outlined
+              v-if="growingInfo.period && growingInfo.day_count"
           >
             <v-list-item>
               <v-list-item-content>
-                <div class="overline mb-4">Grow config</div>
-                <v-list-item-title class="headline mb-1">{{ config.name }}</v-list-item-title>
+                <div class="overline mb-4">Growing</div>
+                <v-list-item-title class="headline mb-1">{{ growingInfo.config }}</v-list-item-title>
+                <v-list-item-subtitle class="headline mb-1">
+                  {{ growingInfo.period }},
+                  {{ growingInfo.day_count }} day
+                </v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-avatar
@@ -21,22 +24,23 @@
                 <v-img :src="getConfigImage(config.id)"></v-img>
               </v-list-item-avatar>
             </v-list-item>
-
-            <v-card-text>{{ config.description }}</v-card-text>
           </v-card>
         </v-col>
-        <v-col class="md4">
+        <v-col md="4">
           <v-card
               class="mx-3"
-              max-width="500"
-              min-height="220"
               outlined
+              v-if="airTemperatureMetricData.avgValue && airHumidityMetricData.avgValue"
           >
             <v-list-item>
               <v-list-item-content>
-                <div class="overline mb-4">Grow period</div>
-                <v-list-item-title class="headline mb-1">{{ period.name }}</v-list-item-title>
-                <v-list-item-subtitle class="headline mb-1">{{ period.day }} day</v-list-item-subtitle>
+                <div class="overline mb-4">Microclimate</div>
+                <v-list-item-title class="headline mb-1">
+                  Temperature: {{ airTemperatureMetricData.avgValue }} ℃
+                </v-list-item-title>
+                <v-list-item-subtitle class="headline mb-1">
+                  Humidity: {{ airHumidityMetricData.avgValue }} %
+                </v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-avatar
@@ -45,22 +49,19 @@
                 <v-img :src="getPeriodImage(period.id)"></v-img>
               </v-list-item-avatar>
             </v-list-item>
-
-            <v-card-text>{{ period.description }}</v-card-text>
           </v-card>
         </v-col>
-        <v-col class="md4">
+        <v-col md="4">
           <v-card
               class="mx-3"
-              max-width="500"
-              min-height="220"
               outlined
+              v-if="wateringStatus"
           >
             <v-list-item>
               <v-list-item-content>
                 <div class="overline mb-4">Watering</div>
-                <v-list-item-title class="headline mb-1">Soil is wet</v-list-item-title>
-                <v-list-item-subtitle class="headline mb-1">Water level: 18%</v-list-item-subtitle>
+                <v-list-item-title class="headline mb-1">{{ wateringStatus }}</v-list-item-title>
+                <v-list-item-subtitle class="headline mb-1">Water level: {{ waterLevelMetricData.avgValue }}%</v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-avatar
@@ -69,67 +70,69 @@
                 <v-img :src="wateringImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
-
-            <v-card-text>
-              Keep an eye on the water level to keep your plants happy
-            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-      <v-row class="mb-12">
-        <v-col class="mb- 4">
+      <v-row class="mb-6" no-gutters>
+        <v-col md="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
               outlined
           >
-            <metric-chart :chart-data="airTemperatureMetricData" :options="chartOptions" :height="chartOptions.height"></metric-chart>
+            <metric-chart :chart-data="airTemperatureMetricData" :options="chartOptions"
+                          :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col class="mb-4">
+        <v-col md="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
               outlined
           >
-            <metric-chart :chart-data="airHumidityMetricData" :options="chartOptions" :height="chartOptions.height"></metric-chart>
+            <metric-chart :chart-data="airHumidityMetricData" :options="chartOptions"
+                          :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col class="mb-4">
+        <v-col md="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
               outlined
           >
-            <metric-chart :chart-data="fanSpeedMetricData" :options="chartOptions" :height="chartOptions.height"></metric-chart>
+            <metric-chart :chart-data="fanSpeedMetricData" :options="chartOptions"
+                          :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
       </v-row>
-      <v-row class="mb-12">
-        <v-col>
+      <v-row class="mb-6" no-gutters>
+        <v-col md="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
               outlined
           >
-            <metric-chart :chart-data="lightBrightnessMetricData" :options="chartOptions" :height="chartOptions.height"></metric-chart>
+            <metric-chart :chart-data="lightBrightnessMetricData" :options="chartOptions"
+                          :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col md="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
               outlined
           >
-            <metric-chart :chart-data="waterLevelMetricData" :options="chartOptions" :height="chartOptions.height"></metric-chart>
+            <metric-chart :chart-data="waterLevelMetricData" :options="chartOptions"
+                          :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col md="4">
           <v-card
               class="mx-3"
               :min-height="chartOptions.height"
           >
-            <metric-chart :chart-data="CPUTemperatureMetricData" :options="chartOptions" :height="chartOptions.height"></metric-chart>
+            <metric-chart :chart-data="CPUTemperatureMetricData" :options="chartOptions"
+                          :height="chartOptions.height"></metric-chart>
           </v-card>
         </v-col>
       </v-row>
@@ -158,8 +161,9 @@ export default {
         'day': 17
       },
       wateringImage: require(`../assets/watering.png`),
+      wateringStatus: '',
       chartOptions: {
-        height: 200,
+        height: 230,
         scales: {
           yAxes: [
             {
@@ -186,6 +190,8 @@ export default {
       lightBrightnessMetricData: {},
       waterLevelMetricData: {},
       CPUTemperatureMetricData: {},
+      // Init growing data var
+      growingInfo: {}
     }
   },
   methods: {
@@ -195,14 +201,20 @@ export default {
     getPeriodImage(id) {
       return require(`../assets/${id}.png`)
     },
+    async loadGrowingInfo() {
+      let response = await fetch(`http://192.168.2.110:5000/api/growing`)
+      return await response.json()
+    },
     async loadMetricsData(metricName, title, color) {
       let response = await fetch(`http://192.168.2.110:5000/api/metrics/${metricName}`)
       let data = await response.json()
+      let avgValue = Math.round(data.avg)
       return {
         labels: data.labels,
+        avgValue: avgValue,
         datasets: [
           {
-            label: title,
+            label: `${title}`,
             borderColor: color,
             pointBorderColor: color,
             data: data.data,
@@ -211,13 +223,24 @@ export default {
         ]
       }
     },
-    async fillData () {
+    async fillData() {
+      // Growing info
+      this.growingInfo = await this.loadGrowingInfo()
+
+      // Metrics
       this.airTemperatureMetricData = await this.loadMetricsData('air_temperature', 'Air Temperature', '#ff3434')
       this.airHumidityMetricData = await this.loadMetricsData('air_humidity', 'Air Humidity', '#bdd4ff')
       this.fanSpeedMetricData = await this.loadMetricsData('fan_speed', 'Fan speed', '#97ecc1')
       this.lightBrightnessMetricData = await this.loadMetricsData('light_brightness', 'Light brightness', '#ffeb67')
       this.waterLevelMetricData = await this.loadMetricsData('water_level', 'Water level', '#7fa7ff')
       this.CPUTemperatureMetricData = await this.loadMetricsData('pi_temperature', 'CPU temperature', '#ff0000')
+
+      if (this.waterLevelMetricData.avgValue <= 10) {
+        this.wateringStatus = 'Need watering'
+      }
+      else {
+        this.wateringStatus = 'Soil is wet'
+      }
     }
   },
   async mounted() {
