@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row class="mb-6" no-gutters>
-        <v-col xs="12" sm="6" md="4" lg="4" xl="4">
+        <v-col xs="12" sm="6" md="4" lg="3" xl="3">
           <v-card
               class="mx-3"
               outlined
@@ -20,13 +20,13 @@
 
               <v-list-item-avatar
                   tile
-                  size="110">
+                  size="100">
                 <v-img :src="getConfigImage(growingInfo.config)"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
+        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
           <v-card
               class="mx-3"
               outlined
@@ -45,13 +45,38 @@
 
               <v-list-item-avatar
                   tile
-                  size="110">
+                  size="100">
                 <v-img :src="microclimateImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="4">
+        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
+          <v-card
+              class="mx-3"
+              outlined
+              v-if="growingInfo.sunrise_start && growingInfo.sunset_stop"
+          >
+            <v-list-item>
+              <v-list-item-content>
+                <div class="overline mb-4">Sun</div>
+                <v-list-item-title class="headline mb-1">
+                  Sunrise: {{ growingInfo.sunrise_start }} - {{ growingInfo.sunrise_stop}}
+                </v-list-item-title>
+                <v-list-item-subtitle class="headline mb-1">
+                  Sunset: {{ growingInfo.sunset_start }} - {{ growingInfo.sunset_stop}}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+
+              <v-list-item-avatar
+                  tile
+                  size="100">
+                <v-img :src="require('../assets/sun.png')"></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+          </v-card>
+        </v-col>
+        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
           <v-card
               class="mx-3"
               outlined
@@ -67,7 +92,7 @@
 
               <v-list-item-avatar
                   tile
-                  size="110">
+                  size="100">
                 <v-img :src="wateringImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
@@ -191,11 +216,11 @@ export default {
       return require(`../assets/${id}.png`)
     },
     async loadGrowingInfo() {
-      let response = await fetch(`http://192.168.2.110:5000/api/growing`)
+      let response = await fetch(process.env.VUE_APP_BASEURL + '/api/growing')
       return await response.json()
     },
     async loadMetricsData(metricName, title, color) {
-      let response = await fetch(`http://192.168.2.110:5000/api/metrics/${metricName}`)
+      let response = await fetch(process.env.VUE_APP_BASEURL + `/api/metrics/${metricName}`)
       let data = await response.json()
       let avgValue = Math.round(data.avg)
       return {
