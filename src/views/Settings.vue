@@ -55,7 +55,7 @@
                 >
                 </v-slider>
                 <v-checkbox
-                    v-model="manualMode"
+                    v-model="fanManualMode"
                     label="Manual mode"
                     required
                 ></v-checkbox>
@@ -67,7 +67,7 @@
             </v-card-subtitle>
 
             <v-card-actions>
-              <v-btn color="orange" text @click="saveConfig">Save</v-btn>
+              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>
               <v-btn color="orange" text @click="reset">Reset</v-btn>
             </v-card-actions>
           </v-card>
@@ -85,7 +85,9 @@ export default {
     dayCount: 0,
     fanSpeed: 0,
     manualMode: false,
+    fanManualMode: false,
     growingInfo: {},
+    fanConfig: {},
     configNames: []
   }),
 
@@ -103,12 +105,20 @@ export default {
       let result = await response.json()
       return result.names
     },
+    async getFanConfig() {
+      let response = await fetch(process.env.VUE_APP_BASEURL + '/api/fan')
+      return await response.json()
+    },
     async loadFormData() {
       this.configNames = await this.getConfigNames()
       this.growingInfo = await this.loadGrowingInfo()
+      this.fanConfig = await this.getFanConfig()
+
       this.configName = this.growingInfo.config
       this.dayCount = this.growingInfo.day_count
       this.manualMode = this.growingInfo.manual_mode
+      this.fanSpeed = this.fanConfig.fan_speed
+      this.fanManualMode = this.fanConfig.manual_mode
     },
     async saveConfig() {
       let data = {
@@ -116,14 +126,26 @@ export default {
         day_count: this.dayCount,
         manual_mode: this.manualMode,
       }
-      let response = await fetch(process.env.VUE_APP_BASEURL + '/api/growing', {
+      await fetch(process.env.VUE_APP_BASEURL + '/api/growing', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       })
-      console.log(await response.json())
+    },
+    async saveFanConfig() {
+      let data = {
+        fan_speed: this.fanSpeed,
+        manual_mode: this.fanManualMode,
+      }
+      await fetch(process.env.VUE_APP_BASEURL + '/api/fan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
     }
   },
   async created() {
