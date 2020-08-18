@@ -55,6 +55,28 @@
           <v-card
               class="mx-3"
               outlined
+              v-if="wateringStatus"
+          >
+            <v-list-item>
+              <v-list-item-content>
+                <div class="overline mb-4">Watering</div>
+                <v-list-item-title class="headline mb-1">{{ wateringStatus }}</v-list-item-title>
+                <v-list-item-subtitle class="headline mb-1">Water level: {{ waterLevelMetricData.avgValue }}%
+                </v-list-item-subtitle>
+              </v-list-item-content>
+
+              <v-list-item-avatar
+                  tile
+                  size="100">
+                <v-img :src="wateringImage"></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+          </v-card>
+        </v-col>
+        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
+          <v-card
+              class="mx-3"
+              outlined
               v-if="growingInfo.sunrise_start && growingInfo.sunset_stop"
           >
             <v-list-item>
@@ -72,28 +94,6 @@
                   tile
                   size="100">
                 <v-img :src="require('../assets/sun.png')"></v-img>
-              </v-list-item-avatar>
-            </v-list-item>
-          </v-card>
-        </v-col>
-        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
-          <v-card
-              class="mx-3"
-              outlined
-              v-if="wateringStatus"
-          >
-            <v-list-item>
-              <v-list-item-content>
-                <div class="overline mb-4">Watering</div>
-                <v-list-item-title class="headline mb-1">{{ wateringStatus }}</v-list-item-title>
-                <v-list-item-subtitle class="headline mb-1">Water level: {{ waterLevelMetricData.avgValue }}%
-                </v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-list-item-avatar
-                  tile
-                  size="100">
-                <v-img :src="wateringImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
