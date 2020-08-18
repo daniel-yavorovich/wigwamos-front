@@ -33,7 +33,7 @@
             </v-card-text>
             <v-card-actions>
               <v-btn color="orange" text @click="saveConfig">Save</v-btn>
-              <v-btn color="orange" text @click="reset">Reset</v-btn>
+              <v-btn color="orange" text @click="loadFormData">Reset</v-btn>
             </v-card-actions>
           </v-card>
 
@@ -68,7 +68,7 @@
 
             <v-card-actions>
               <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>
-              <v-btn color="orange" text @click="reset">Reset</v-btn>
+              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>
             </v-card-actions>
           </v-card>
 
@@ -92,10 +92,6 @@ export default {
   }),
 
   methods: {
-    async reset() {
-      await this.$refs.form.reset()
-      await this.loadFormData()
-    },
     async loadGrowingInfo() {
       let response = await fetch(process.env.VUE_APP_BASEURL + '/api/growing')
       return await response.json()
@@ -109,16 +105,20 @@ export default {
       let response = await fetch(process.env.VUE_APP_BASEURL + '/api/fan')
       return await response.json()
     },
+    async loadFanFormData() {
+      this.fanConfig = await this.getFanConfig()
+      this.fanSpeed = this.fanConfig.fan_speed
+      this.fanManualMode = this.fanConfig.manual_mode
+    },
     async loadFormData() {
       this.configNames = await this.getConfigNames()
       this.growingInfo = await this.loadGrowingInfo()
-      this.fanConfig = await this.getFanConfig()
 
       this.configName = this.growingInfo.config
       this.dayCount = this.growingInfo.day_count
       this.manualMode = this.growingInfo.manual_mode
-      this.fanSpeed = this.fanConfig.fan_speed
-      this.fanManualMode = this.fanConfig.manual_mode
+
+      await this.loadFanFormData()
     },
     async saveConfig() {
       let data = {
@@ -154,6 +154,11 @@ export default {
   computed: {
     dayCountLabel: function () {
       return this.dayCount.toString()
+    }
+  },
+  watch: {
+    async manualMode() {
+      await this.loadFanFormData()
     }
   }
 }
