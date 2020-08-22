@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row class="mb-6" no-gutters>
-        <v-col xs="12" sm="6" md="4" lg="3" xl="3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -20,13 +20,13 @@
 
               <v-list-item-avatar
                   tile
-                  size="100">
+                  size="80">
                 <v-img :src="getConfigImage(growingInfo.config)"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -45,13 +45,13 @@
 
               <v-list-item-avatar
                   tile
-                  size="100">
+                  size="80">
                 <v-img :src="microclimateImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
-        </v-col>
-        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
+        </v-col >
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -67,13 +67,13 @@
 
               <v-list-item-avatar
                   tile
-                  size="100">
+                  size="80">
                 <v-img :src="wateringImage"></v-img>
               </v-list-item-avatar>
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="3" xl="3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -92,7 +92,7 @@
 
               <v-list-item-avatar
                   tile
-                  size="100">
+                  size="80">
                 <v-img :src="require('../assets/sun.png')"></v-img>
               </v-list-item-avatar>
             </v-list-item>
