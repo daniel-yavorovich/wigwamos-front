@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row class="mb-6" no-gutters>
-        <v-col xs="12" sm="12" md="4" lg="3" xl="3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3">
           <v-card class="mx-0" max-width="400" min-height="500">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/growing-plants.jpg')">
@@ -38,7 +38,35 @@
           </v-card>
 
         </v-col>
-        <v-col xs="12" sm="12" md="4" lg="3" xl="3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3">
+          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
+            <v-img class="white--text align-end" height="220px"
+                   :src="require('../assets/light.jpg')">
+              <v-card-title>Light</v-card-title>
+            </v-img>
+
+            <v-card-text class="text--primary">
+              <v-form ref="form">
+                <v-checkbox
+                    v-model="lightManualMode"
+                    label="Manual mode"
+                    required
+                ></v-checkbox>
+              </v-form>
+            </v-card-text>
+
+            <v-card-subtitle class="pb-0">
+              Please note: switching on the manual fan control mode can lead to an uncontrolled temperature change
+            </v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>
+              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>
+            </v-card-actions>
+          </v-card>
+
+        </v-col>
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3">
           <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/fan.jpg')">
@@ -73,6 +101,41 @@
           </v-card>
 
         </v-col>
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3">
+          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
+            <v-img class="white--text align-end" height="220px"
+                   :src="require('../assets/humidifier.jpeg')">
+              <v-card-title>Humidify</v-card-title>
+            </v-img>
+
+            <v-card-text class="text--primary">
+              <v-form ref="form">
+                <v-slider
+                    v-model="humidity"
+                    :label="`Humidity [${humidity}%]`"
+                    min="35"
+                    max="100"
+                >
+                </v-slider>
+                <v-checkbox
+                    v-model="humidifyManualMode"
+                    label="Manual mode"
+                    required
+                ></v-checkbox>
+              </v-form>
+            </v-card-text>
+
+            <v-card-subtitle class="pb-0">
+              Buy the way: Ideal humidity is somewhere between 45% and 75%
+            </v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>
+              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>
+            </v-card-actions>
+          </v-card>
+
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -84,8 +147,11 @@ export default {
     configName: '',
     dayCount: 0,
     fanSpeed: 0,
+    humidity: 0,
     manualMode: false,
     fanManualMode: false,
+    humidifyManualMode: false,
+    lightManualMode: false,
     growingInfo: {},
     fanConfig: {},
     configNames: []

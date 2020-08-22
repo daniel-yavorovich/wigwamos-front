@@ -249,7 +249,7 @@ export default {
       this.waterLevelMetricData = await this.loadMetricsData('water_level', 'Water level', '#7fa7ff')
       this.CPUTemperatureMetricData = await this.loadMetricsData('pi_temperature', 'CPU temperature', '#ff0000')
 
-      if (this.waterLevelMetricData.avgValue <= 10) {
+      if (this.waterLevelMetricData.avgValue === 0) {
         this.wateringStatus = 'Need watering'
       } else {
         this.wateringStatus = 'Soil is wet'
