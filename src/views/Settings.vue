@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="mb-6" no-gutters>
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="500">
+          <v-card class="mx-0" max-width="400" min-height="550">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/growing-plants.jpg')">
               <v-card-title>Growing configuration</v-card-title>
@@ -24,11 +24,6 @@
                     :max="growingInfo.total_days"
                 >
                 </v-slider>
-                <v-checkbox
-                    v-model="manualMode"
-                    label="Manual mode"
-                    required
-                ></v-checkbox>
               </v-form>
             </v-card-text>
             <v-card-actions>
@@ -39,7 +34,7 @@
 
         </v-col>
         <!--        <v-col xs="12" sm="6" md="6" lg="4" xl="3">-->
-        <!--          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">-->
+        <!--          <v-card class="mx-0" max-width="400" min-height="500">-->
         <!--            <v-img class="white&#45;&#45;text align-end" height="220px"-->
         <!--                   :src="require('../assets/light.jpg')">-->
         <!--              <v-card-title>Light</v-card-title>-->
@@ -67,7 +62,7 @@
 
         <!--        </v-col>-->
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
+          <v-card class="mx-0" max-width="400" min-height="550">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/fan.jpg')">
               <v-card-title>Fan control</v-card-title>
@@ -102,7 +97,7 @@
 
         </v-col>
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
+          <v-card class="mx-0" max-width="400" min-height="550">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/humidifier.jpeg')">
               <v-card-title>Humidify</v-card-title>
@@ -120,6 +115,20 @@
                     label="Disabled"
                     required
                 ></v-checkbox>
+                <v-slider
+                    v-model="humidifyPumpUsageInterval"
+                    :label="`Pump usage interval [${humidifyPumpUsageInterval} sec]`"
+                    min="10"
+                    max="300"
+                >
+                </v-slider>
+                <v-slider
+                    v-model="humidifyPumpDuration"
+                    :label="`Pump duration [${humidifyPumpDuration} sec]`"
+                    min="1"
+                    max="20"
+                >
+                </v-slider>
                 <v-slider
                     v-if="humidifyManualMode"
                     v-model="humidifyManualValue"
@@ -149,11 +158,12 @@ export default {
     configName: '',
     dayCount: 0,
     fanSpeed: 0,
-    manualMode: false,
     fanManualMode: false,
     humidifyManualMode: false,
     humidifyManualValue: 0,
     humidifyDisabled: false,
+    humidifyPumpUsageInterval: 0,
+    humidifyPumpDuration: 0,
     lightManualMode: false,
     growingInfo: {},
     fanConfig: {},
@@ -188,6 +198,8 @@ export default {
       this.humidifyManualMode = this.humidifyConfig.manual_mode
       this.humidifyManualValue = this.humidifyConfig.manual_humidity
       this.humidifyDisabled = this.humidifyConfig.is_disabled
+      this.humidifyPumpUsageInterval = this.humidifyConfig.pump_usage_interval
+      this.humidifyPumpDuration = this.humidifyConfig.pump_duration
     },
     async loadFormData() {
       this.configNames = await this.getConfigNames()
@@ -195,7 +207,6 @@ export default {
 
       this.configName = this.growingInfo.config
       this.dayCount = this.growingInfo.day_count
-      this.manualMode = this.growingInfo.manual_mode
 
       await this.loadFanFormData()
       await this.loadHumidifyFormData()
@@ -204,7 +215,6 @@ export default {
       let data = {
         config: this.configName,
         day_count: this.dayCount,
-        manual_mode: this.manualMode,
       }
       await fetch(process.env.VUE_APP_BASEURL + '/api/growing', {
         method: 'POST',
@@ -232,6 +242,8 @@ export default {
         manual_humidity: this.humidifyManualValue,
         manual_mode: this.humidifyManualMode,
         is_disabled: this.humidifyDisabled,
+        pump_usage_interval: this.humidifyPumpUsageInterval,
+        pump_duration: this.humidifyPumpDuration,
       }
       await fetch(process.env.VUE_APP_BASEURL + '/api/humidify', {
         method: 'POST',
@@ -248,11 +260,6 @@ export default {
   computed: {
     dayCountLabel: function () {
       return this.dayCount.toString()
-    }
-  },
-  watch: {
-    async manualMode() {
-      await this.loadFanFormData()
     }
   }
 }
