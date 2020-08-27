@@ -38,34 +38,34 @@
           </v-card>
 
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
-            <v-img class="white--text align-end" height="220px"
-                   :src="require('../assets/light.jpg')">
-              <v-card-title>Light</v-card-title>
-            </v-img>
+        <!--        <v-col xs="12" sm="6" md="6" lg="4" xl="3">-->
+        <!--          <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">-->
+        <!--            <v-img class="white&#45;&#45;text align-end" height="220px"-->
+        <!--                   :src="require('../assets/light.jpg')">-->
+        <!--              <v-card-title>Light</v-card-title>-->
+        <!--            </v-img>-->
 
-            <v-card-text class="text--primary">
-              <v-form ref="form">
-                <v-checkbox
-                    v-model="lightManualMode"
-                    label="Manual mode"
-                    required
-                ></v-checkbox>
-              </v-form>
-            </v-card-text>
+        <!--            <v-card-text class="text&#45;&#45;primary">-->
+        <!--              <v-form ref="form">-->
+        <!--                <v-checkbox-->
+        <!--                    v-model="lightManualMode"-->
+        <!--                    label="Manual mode"-->
+        <!--                    required-->
+        <!--                ></v-checkbox>-->
+        <!--              </v-form>-->
+        <!--            </v-card-text>-->
 
-            <v-card-subtitle class="pb-0">
-              Please note: switching on the manual fan control mode can lead to an uncontrolled temperature change
-            </v-card-subtitle>
+        <!--            <v-card-subtitle class="pb-0">-->
+        <!--              Please note: switching on the manual fan control mode can lead to an uncontrolled temperature change-->
+        <!--            </v-card-subtitle>-->
 
-            <v-card-actions>
-              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>
-              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>
-            </v-card-actions>
-          </v-card>
+        <!--            <v-card-actions>-->
+        <!--              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>-->
+        <!--              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>-->
+        <!--            </v-card-actions>-->
+        <!--          </v-card>-->
 
-        </v-col>
+        <!--        </v-col>-->
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
           <v-card class="mx-0" max-width="400" min-height="500" v-if="manualMode">
             <v-img class="white--text align-end" height="220px"
@@ -110,27 +110,29 @@
 
             <v-card-text class="text--primary">
               <v-form ref="form">
-                <v-slider
-                    v-model="humidity"
-                    :label="`Humidity [${humidity}%]`"
-                    min="35"
-                    max="100"
-                >
-                </v-slider>
                 <v-checkbox
                     v-model="humidifyManualMode"
                     label="Manual mode"
                     required
                 ></v-checkbox>
+                <v-checkbox
+                    v-model="humidifyDisabled"
+                    label="Disabled"
+                    required
+                ></v-checkbox>
+                <v-slider
+                    v-if="humidifyManualMode"
+                    v-model="humidifyManualValue"
+                    :label="`Humidity [${humidifyManualValue}%]`"
+                    min="35"
+                    max="100"
+                >
+                </v-slider>
               </v-form>
             </v-card-text>
 
-            <v-card-subtitle class="pb-0">
-              Buy the way: Ideal humidity is somewhere between 45% and 75%
-            </v-card-subtitle>
-
             <v-card-actions>
-              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>
+              <v-btn color="orange" text @click="saveHumidifyConfig">Save</v-btn>
               <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>
             </v-card-actions>
           </v-card>
@@ -147,10 +149,11 @@ export default {
     configName: '',
     dayCount: 0,
     fanSpeed: 0,
-    humidity: 0,
     manualMode: false,
     fanManualMode: false,
     humidifyManualMode: false,
+    humidifyManualValue: 0,
+    humidifyDisabled: false,
     lightManualMode: false,
     growingInfo: {},
     fanConfig: {},
@@ -171,10 +174,20 @@ export default {
       let response = await fetch(process.env.VUE_APP_BASEURL + '/api/fan')
       return await response.json()
     },
+    async getHumidifyConfig() {
+      let response = await fetch(process.env.VUE_APP_BASEURL + '/api/humidify')
+      return await response.json()
+    },
     async loadFanFormData() {
       this.fanConfig = await this.getFanConfig()
       this.fanSpeed = this.fanConfig.fan_speed
       this.fanManualMode = this.fanConfig.manual_mode
+    },
+    async loadHumidifyFormData() {
+      this.humidifyConfig = await this.getHumidifyConfig()
+      this.humidifyManualMode = this.humidifyConfig.manual_mode
+      this.humidifyManualValue = this.humidifyConfig.manual_humidity
+      this.humidifyDisabled = this.humidifyConfig.is_disabled
     },
     async loadFormData() {
       this.configNames = await this.getConfigNames()
@@ -185,6 +198,7 @@ export default {
       this.manualMode = this.growingInfo.manual_mode
 
       await this.loadFanFormData()
+      await this.loadHumidifyFormData()
     },
     async saveConfig() {
       let data = {
@@ -206,6 +220,20 @@ export default {
         manual_mode: this.fanManualMode,
       }
       await fetch(process.env.VUE_APP_BASEURL + '/api/fan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+    },
+    async saveHumidifyConfig() {
+      let data = {
+        manual_humidity: this.humidifyManualValue,
+        manual_mode: this.humidifyManualMode,
+        is_disabled: this.humidifyDisabled,
+      }
+      await fetch(process.env.VUE_APP_BASEURL + '/api/humidify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

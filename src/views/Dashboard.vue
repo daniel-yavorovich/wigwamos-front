@@ -6,6 +6,7 @@
           <v-card
               class="mx-3"
               outlined
+              min-height="140"
               v-if="growingInfo.period && growingInfo.day_count"
           >
             <v-list-item>
@@ -30,6 +31,7 @@
           <v-card
               class="mx-3"
               outlined
+              min-height="140"
               v-if="airTemperatureMetricData.avgValue && airHumidityMetricData.avgValue"
           >
             <v-list-item>
@@ -55,6 +57,7 @@
           <v-card
               class="mx-3"
               outlined
+              min-height="140"
               v-if="wateringStatus"
           >
             <v-list-item>
@@ -73,19 +76,20 @@
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="4" class="mb-3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
           <v-card
               class="mx-3"
               outlined
+              min-height="140"
               v-if="growingInfo.sunrise_start && growingInfo.sunset_stop"
           >
             <v-list-item>
               <v-list-item-content>
                 <div class="overline mb-4">Sun</div>
-                <v-list-item-title class="headline mb-1">
+                <v-list-item-subtitle class="subtitle-1 mb-5">
                   Sunrise: {{ growingInfo.sunrise_start }} - {{ growingInfo.sunrise_stop}}
-                </v-list-item-title>
-                <v-list-item-subtitle class="headline mb-1">
+                </v-list-item-subtitle>
+                <v-list-item-subtitle class="subtitle-1">
                   Sunset: {{ growingInfo.sunset_start }} - {{ growingInfo.sunset_stop}}
                 </v-list-item-subtitle>
               </v-list-item-content>
