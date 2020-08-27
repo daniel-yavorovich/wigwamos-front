@@ -33,34 +33,6 @@
           </v-card>
 
         </v-col>
-        <!--        <v-col xs="12" sm="6" md="6" lg="4" xl="3">-->
-        <!--          <v-card class="mx-0" max-width="400" min-height="500">-->
-        <!--            <v-img class="white&#45;&#45;text align-end" height="220px"-->
-        <!--                   :src="require('../assets/light.jpg')">-->
-        <!--              <v-card-title>Light</v-card-title>-->
-        <!--            </v-img>-->
-
-        <!--            <v-card-text class="text&#45;&#45;primary">-->
-        <!--              <v-form ref="form">-->
-        <!--                <v-checkbox-->
-        <!--                    v-model="lightManualMode"-->
-        <!--                    label="Manual mode"-->
-        <!--                    required-->
-        <!--                ></v-checkbox>-->
-        <!--              </v-form>-->
-        <!--            </v-card-text>-->
-
-        <!--            <v-card-subtitle class="pb-0">-->
-        <!--              Please note: switching on the manual fan control mode can lead to an uncontrolled temperature change-->
-        <!--            </v-card-subtitle>-->
-
-        <!--            <v-card-actions>-->
-        <!--              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>-->
-        <!--              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>-->
-        <!--            </v-card-actions>-->
-        <!--          </v-card>-->
-
-        <!--        </v-col>-->
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
           <v-card class="mx-0" max-width="400" min-height="550">
             <v-img class="white--text align-end" height="220px"
@@ -115,20 +87,18 @@
                     label="Disabled"
                     required
                 ></v-checkbox>
-                <v-slider
+                <v-text-field
                     v-model="humidifyPumpUsageInterval"
-                    :label="`Pump usage interval [${humidifyPumpUsageInterval} sec]`"
-                    min="10"
-                    max="300"
+                    :label="`Pump usage interval`"
+                    type="number"
                 >
-                </v-slider>
-                <v-slider
+                </v-text-field>
+                <v-text-field
                     v-model="humidifyPumpDuration"
-                    :label="`Pump duration [${humidifyPumpDuration} sec]`"
-                    min="1"
-                    max="20"
+                    :label="`Pump duration`"
+                    type="number"
                 >
-                </v-slider>
+                </v-text-field>
                 <v-slider
                     v-if="humidifyManualMode"
                     v-model="humidifyManualValue"
@@ -147,6 +117,34 @@
           </v-card>
 
         </v-col>
+        <!--        <v-col xs="12" sm="6" md="6" lg="4" xl="3">-->
+        <!--          <v-card class="mx-0" max-width="400" min-height="500">-->
+        <!--            <v-img class="white&#45;&#45;text align-end" height="220px"-->
+        <!--                   :src="require('../assets/light.jpg')">-->
+        <!--              <v-card-title>Light</v-card-title>-->
+        <!--            </v-img>-->
+
+        <!--            <v-card-text class="text&#45;&#45;primary">-->
+        <!--              <v-form ref="form">-->
+        <!--                <v-checkbox-->
+        <!--                    v-model="lightManualMode"-->
+        <!--                    label="Manual mode"-->
+        <!--                    required-->
+        <!--                ></v-checkbox>-->
+        <!--              </v-form>-->
+        <!--            </v-card-text>-->
+
+        <!--            <v-card-subtitle class="pb-0">-->
+        <!--              Please note: switching on the manual fan control mode can lead to an uncontrolled temperature change-->
+        <!--            </v-card-subtitle>-->
+
+        <!--            <v-card-actions>-->
+        <!--              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>-->
+        <!--              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>-->
+        <!--            </v-card-actions>-->
+        <!--          </v-card>-->
+
+        <!--        </v-col>-->
       </v-row>
     </v-container>
   </div>
