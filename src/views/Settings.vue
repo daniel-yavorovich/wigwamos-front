@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="mb-6" no-gutters>
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="550">
+          <v-card class="mx-0" max-width="400" min-height="300">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/growing-plants.jpg')">
               <v-card-title>Growing configuration</v-card-title>
@@ -17,6 +17,30 @@
                     label="Config"
                     required
                 ></v-select>
+                <v-text-field
+                    v-model="sunriseStart"
+                    label="Sunrise start"
+                    type="time"
+                    required
+                ></v-text-field>
+                <v-text-field
+                    v-model="sunriseStop"
+                    label="Sunrise stop"
+                    type="time"
+                    required
+                ></v-text-field>
+                <v-text-field
+                    v-model="sunsetStart"
+                    label="Sunset start"
+                    type="time"
+                    required
+                ></v-text-field>
+                <v-text-field
+                    v-model="sunsetStop"
+                    label="Sunset stop"
+                    type="time"
+                    required
+                ></v-text-field>
                 <v-slider
                     v-model="dayCount"
                     :label="`Day [${dayCountLabel}]`"
@@ -34,7 +58,7 @@
 
         </v-col>
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="550">
+          <v-card class="mx-0" max-width="400" min-height="300">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/fan.jpg')">
               <v-card-title>Fan control</v-card-title>
@@ -42,18 +66,19 @@
 
             <v-card-text class="text--primary">
               <v-form ref="form">
+                <v-checkbox
+                    v-model="fanManualMode"
+                    label="Manual mode"
+                    required
+                ></v-checkbox>
                 <v-slider
+                    v-if="fanManualMode"
                     v-model="fanSpeed"
                     :label="`Fan speed [${fanSpeed}%]`"
                     min="50"
                     max="100"
                 >
                 </v-slider>
-                <v-checkbox
-                    v-model="fanManualMode"
-                    label="Manual mode"
-                    required
-                ></v-checkbox>
               </v-form>
             </v-card-text>
 
@@ -69,7 +94,7 @@
 
         </v-col>
         <v-col xs="12" sm="6" md="6" lg="4" xl="3">
-          <v-card class="mx-0" max-width="400" min-height="550">
+          <v-card class="mx-0" max-width="400" min-height="300">
             <v-img class="white--text align-end" height="220px"
                    :src="require('../assets/humidifier.jpeg')">
               <v-card-title>Humidify</v-card-title>
@@ -117,34 +142,6 @@
           </v-card>
 
         </v-col>
-        <!--        <v-col xs="12" sm="6" md="6" lg="4" xl="3">-->
-        <!--          <v-card class="mx-0" max-width="400" min-height="500">-->
-        <!--            <v-img class="white&#45;&#45;text align-end" height="220px"-->
-        <!--                   :src="require('../assets/light.jpg')">-->
-        <!--              <v-card-title>Light</v-card-title>-->
-        <!--            </v-img>-->
-
-        <!--            <v-card-text class="text&#45;&#45;primary">-->
-        <!--              <v-form ref="form">-->
-        <!--                <v-checkbox-->
-        <!--                    v-model="lightManualMode"-->
-        <!--                    label="Manual mode"-->
-        <!--                    required-->
-        <!--                ></v-checkbox>-->
-        <!--              </v-form>-->
-        <!--            </v-card-text>-->
-
-        <!--            <v-card-subtitle class="pb-0">-->
-        <!--              Please note: switching on the manual fan control mode can lead to an uncontrolled temperature change-->
-        <!--            </v-card-subtitle>-->
-
-        <!--            <v-card-actions>-->
-        <!--              <v-btn color="orange" text @click="saveFanConfig">Save</v-btn>-->
-        <!--              <v-btn color="orange" text @click="loadFanFormData">Reset</v-btn>-->
-        <!--            </v-card-actions>-->
-        <!--          </v-card>-->
-
-        <!--        </v-col>-->
       </v-row>
     </v-container>
   </div>
@@ -162,7 +159,10 @@ export default {
     humidifyDisabled: false,
     humidifyPumpUsageInterval: 0,
     humidifyPumpDuration: 0,
-    lightManualMode: false,
+    sunriseStart: null,
+    sunriseStop: null,
+    sunsetStart: null,
+    sunsetStop: null,
     growingInfo: {},
     fanConfig: {},
     configNames: []
@@ -205,6 +205,10 @@ export default {
 
       this.configName = this.growingInfo.config
       this.dayCount = this.growingInfo.day_count
+      this.sunriseStart = this.growingInfo.sunrise_start
+      this.sunriseStop = this.growingInfo.sunrise_stop
+      this.sunsetStart = this.growingInfo.sunset_start
+      this.sunsetStop = this.growingInfo.sunset_stop
 
       await this.loadFanFormData()
       await this.loadHumidifyFormData()
@@ -213,6 +217,10 @@ export default {
       let data = {
         config: this.configName,
         day_count: this.dayCount,
+        sunrise_start: this.sunriseStart,
+        sunrise_stop: this.sunriseStop,
+        sunset_start: this.sunsetStart,
+        sunset_stop: this.sunsetStop,
       }
       await fetch(process.env.VUE_APP_BASEURL + '/api/growing', {
         method: 'POST',
