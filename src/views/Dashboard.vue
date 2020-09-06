@@ -81,16 +81,16 @@
               class="mx-3"
               outlined
               min-height="140"
-              v-if="growingInfo.sunrise_start && growingInfo.sunset_stop"
+              v-if="growingInfo.sunrise && growingInfo.sunset"
           >
             <v-list-item>
               <v-list-item-content>
                 <div class="overline mb-4">Sun</div>
                 <v-list-item-subtitle class="subtitle-1 mb-5">
-                  Sunrise: {{ growingInfo.sunrise_start }} - {{ growingInfo.sunrise_stop}}
+                  Sunrise: {{ growingInfo.sunrise }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle class="subtitle-1">
-                  Sunset: {{ growingInfo.sunset_start }} - {{ growingInfo.sunset_stop}}
+                  Sunset: {{ growingInfo.sunset }}
                 </v-list-item-subtitle>
               </v-list-item-content>
 

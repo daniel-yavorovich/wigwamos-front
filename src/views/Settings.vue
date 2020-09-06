@@ -18,27 +18,27 @@
                     required
                 ></v-select>
                 <v-text-field
-                    v-model="sunriseStart"
-                    label="Sunrise start"
+                    v-model="sunrise"
+                    label="Sunrise"
                     type="time"
                     required
                 ></v-text-field>
                 <v-text-field
-                    v-model="sunriseStop"
-                    label="Sunrise stop"
-                    type="time"
+                    v-model="dayLengthHours"
+                    label="Day length (hours)"
+                    type="number"
                     required
                 ></v-text-field>
                 <v-text-field
-                    v-model="sunsetStart"
-                    label="Sunset start"
-                    type="time"
+                    v-model="sunriseDurationMinutes"
+                    label="Sunrise duration (minutes)"
+                    type="number"
                     required
                 ></v-text-field>
                 <v-text-field
-                    v-model="sunsetStop"
-                    label="Sunset stop"
-                    type="time"
+                    v-model="sunsetDurationMinutes"
+                    label="Sunset duration (minutes)"
+                    type="number"
                     required
                 ></v-text-field>
                 <v-slider
@@ -159,10 +159,10 @@ export default {
     humidifyDisabled: false,
     humidifyPumpUsageInterval: 0,
     humidifyPumpDuration: 0,
-    sunriseStart: null,
-    sunriseStop: null,
-    sunsetStart: null,
-    sunsetStop: null,
+    sunrise: null,
+    dayLengthHours: null,
+    sunriseDurationMinutes: null,
+    sunsetDurationMinutes: null,
     growingInfo: {},
     fanConfig: {},
     configNames: []
@@ -205,10 +205,10 @@ export default {
 
       this.configName = this.growingInfo.config
       this.dayCount = this.growingInfo.day_count
-      this.sunriseStart = this.growingInfo.sunrise_start
-      this.sunriseStop = this.growingInfo.sunrise_stop
-      this.sunsetStart = this.growingInfo.sunset_start
-      this.sunsetStop = this.growingInfo.sunset_stop
+      this.sunrise = this.growingInfo.sunrise
+      this.dayLengthHours = this.growingInfo.day_length_hours
+      this.sunriseDurationMinutes = this.growingInfo.sunrise_duration_minutes
+      this.sunsetDurationMinutes = this.growingInfo.sunset_duration_minutes
 
       await this.loadFanFormData()
       await this.loadHumidifyFormData()
@@ -217,10 +217,10 @@ export default {
       let data = {
         config: this.configName,
         day_count: this.dayCount,
-        sunrise_start: this.sunriseStart,
-        sunrise_stop: this.sunriseStop,
-        sunset_start: this.sunsetStart,
-        sunset_stop: this.sunsetStop,
+        sunrise: this.sunrise,
+        day_length_hours: this.dayLengthHours,
+        sunrise_duration_minutes: this.sunriseDurationMinutes,
+        sunset_duration_minutes: this.sunsetDurationMinutes,
       }
       await fetch(process.env.VUE_APP_BASEURL + '/api/growing', {
         method: 'POST',
