@@ -86,12 +86,19 @@
             <v-list-item>
               <v-list-item-content>
                 <div class="overline mb-4">Sun</div>
-                <v-list-item-subtitle class="subtitle-1 mb-5">
-                  Sunrise: {{ growingInfo.sunrise }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle class="subtitle-1">
-                  Sunset: {{ growingInfo.sunset }}
-                </v-list-item-subtitle>
+                <div v-if="growingInfo.sunrise !== growingInfo.sunset">
+                  <v-list-item-subtitle class="headline mb-1">
+                    Sunrise: {{ growingInfo.sunrise }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="headline mb-1">
+                    Sunset: {{ growingInfo.sunset }}
+                  </v-list-item-subtitle>
+                </div>
+                <div v-if="growingInfo.sunrise === growingInfo.sunset">
+                  <v-list-item-subtitle class="headline mb-1">
+                    24h (all day)
+                  </v-list-item-subtitle>
+                </div>
               </v-list-item-content>
 
               <v-list-item-avatar
