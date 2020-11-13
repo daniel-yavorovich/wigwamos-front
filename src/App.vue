@@ -22,6 +22,14 @@
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/view">
+          <v-list-item-action>
+            <v-icon>mdi-camera</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>View</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
