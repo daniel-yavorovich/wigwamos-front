@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row class="mb-6" no-gutters>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -27,7 +27,7 @@
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -53,30 +53,7 @@
             </v-list-item>
           </v-card>
         </v-col >
-        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
-          <v-card
-              class="mx-3"
-              outlined
-              min-height="140"
-              v-if="wateringStatus"
-          >
-            <v-list-item>
-              <v-list-item-content>
-                <div class="overline mb-4">Watering</div>
-                <v-list-item-title class="headline mb-1">{{ wateringStatus }}</v-list-item-title>
-                <v-list-item-subtitle class="headline mb-1">Water level: {{ waterLevelMetricData.avgValue }}%
-                </v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-list-item-avatar
-                  tile
-                  size="80">
-                <v-img :src="wateringImage"></v-img>
-              </v-list-item-avatar>
-            </v-list-item>
-          </v-card>
-        </v-col>
-        <v-col xs="12" sm="6" md="6" lg="4" xl="3" class="mb-3">
+        <v-col xs="12" sm="6" md="6" lg="4" xl="4" class="mb-3">
           <v-card
               class="mx-3"
               outlined
@@ -85,7 +62,7 @@
           >
             <v-list-item>
               <v-list-item-content>
-                <div class="overline mb-4">Sun</div>
+                <div class="overline mb-4">Sun (60 cm above the plant)</div>
                 <div v-if="growingInfo.sunrise !== growingInfo.sunset">
                   <v-list-item-subtitle class="headline mb-1">
                     Sunrise: {{ growingInfo.sunrise }}
@@ -187,9 +164,7 @@ export default {
   data() {
     return {
       timer: '',
-      wateringImage: require(`../assets/watering.png`),
       microclimateImage: require(`../assets/microclimate.png`),
-      wateringStatus: '',
       chartOptions: {
         height: 230,
         scales: {
@@ -259,12 +234,6 @@ export default {
       this.lightBrightnessMetricData = await this.loadMetricsData('light_brightness', 'Light brightness', '#ffeb67')
       this.waterLevelMetricData = await this.loadMetricsData('water_level', 'Water level', '#7fa7ff')
       this.CPUTemperatureMetricData = await this.loadMetricsData('pi_temperature', 'CPU temperature', '#ff0000')
-
-      if (this.waterLevelMetricData.avgValue === 0) {
-        this.wateringStatus = 'Need watering'
-      } else {
-        this.wateringStatus = 'Soil is wet'
-      }
     }
   },
   created() {
